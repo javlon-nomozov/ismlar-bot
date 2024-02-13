@@ -13,12 +13,14 @@ const logger = require("./middlewares/logger");
 bot.use(session());
 
 // My Middlewares
-// bot.use(logger);
+bot.use(logger);
+
 // session middleware must be initialized before state middlewar
 bot.use(stateInit());
 
 // Init handlers
 bot.use(handlers);
+
 bot.telegram.getChat(ADMINS[0]).then((res) => console.log(res));
 
 bot.telegram

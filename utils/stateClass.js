@@ -31,11 +31,10 @@ class State {
   }
   end() {
     this.data = {};
-    this.current = "";
-    this.states = [];
+    this.current = "-";
+    this.states = ['-'];
   }
   set setState(state) {
-    console.log({ state });
     for (const key of Object.keys(state)) {
       this[key] = state[key];
     }

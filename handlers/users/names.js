@@ -1,12 +1,21 @@
+const { join: path } = require("path");
+
 const { Composer } = require("telegraf");
 const composer = new Composer();
-const { mainInlineKey } = require("../../keyboards/inline/main");
-const nameToImg = require("../../utils/app/names");
-const fancyText = require("../../utils/app/fancy-text-gen");
 
+// import filters
+const stateFilter = require("../../filters/stateFilter");
+const {callbackFilter} = require('../../filters/custom')
+
+// import state
 const namesState = require("../../states/names");
 const fancyTextState = require("../../states/fancy-text");
 
+// import apps
+const nameToImg = require("../../utils/app/names");
+const fancyText = require("../../utils/app/fancy-text-gen");
+
+// handlers
 composer.start((ctx, next) => {
   // Extract parameters from the deep link
   const parameters = ctx.payload;
@@ -36,11 +45,14 @@ composer.start((ctx, next) => {
   }
 });
 
-composer.start((ctx) => {
-  ctx.reply(
-    "Assalomu alaikum. Ushbu kanallardan keraklisiga kirib namuna tanlang:\nBu reklama emas va ularga obuna bo'lishingiz shart emas",
-    mainInlineKey
+composer.on(stateFilter(namesState.image), async (ctx) => {
+  const nameImg = await nameToImg[ctx.state.data.image](
+    ctx.update.message.text
   );
+  await ctx.reply("⏳");
+  ctx.reply("Rasmingiz tayyorlanmoqda iltimos biroz kuting").message_id;
+  await ctx.replyWithPhoto({ source: path(__dirname, "../../", nameImg) });
+  ctx.state.end();
 });
 
 module.exports = composer;

@@ -1,11 +1,13 @@
 const { Composer } = require("telegraf");
 const composer = new Composer();
 composer.use(
-  require("./state"),
-  require("./examples"),
-  require("./form"),
+  // require("./state"),
+  require("./fancy-text"),
   require("./start"),
-  require("./help")
+  require("./names"),
+  require("./help"),
+  require("./echo"),
+  require("./form")
 );
 
 module.exports = composer;

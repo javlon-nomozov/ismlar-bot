@@ -70,11 +70,19 @@ const hashtagFilter = (hashtag) => {
 };
 
 const textFilter = (callback) => (update) => {
-  const data1 = update.message
-    ? update.message
-    : update.callback_query;
-  const data2 = data1.text ? data1.text : data1.data;
-  return callback(data2);
+  const data = update.message;
+  if (!data) {
+    return () => false;
+  }
+  return callback(data.text);
 };
 
-module.exports = { commandFilter, hashtagFilter, textFilter };
+const callbackFilter = (callback) => (update) => {
+  const data = update.callback_query;
+  if (!data) {
+    return () => false;
+  }
+  return callback(data.data);
+};
+
+module.exports = { commandFilter, hashtagFilter, textFilter, callbackFilter };
