@@ -72,16 +72,19 @@ const hashtagFilter = (hashtag) => {
 const textFilter = (callback) => (update) => {
   const data = update.message;
   if (!data) {
-    return () => false;
+    return false;
   }
   return callback(data.text);
 };
 
 const callbackFilter = (callback) => (update) => {
   const data = update.callback_query;
+  console.log('update:',update);
   if (!data) {
-    return () => false;
+    return false;
   }
+  console.log('filter:',callback(data.data));
+  console.log('data:',data.data);
   return callback(data.data);
 };
 

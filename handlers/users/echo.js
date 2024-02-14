@@ -13,9 +13,9 @@ const {
 const { mainInlineKey } = require("../../keyboards/inline/main");
 
 composer.on("message", async (ctx) => {
-  await ctx.reply(
-    "Ushbu kanallardan keraklisiga kirib namuna tanlang:\nBu reklama emas va ularga obuna bo'lishingiz shart emas",
-    mainInlineKey
+  ctx.reply(
+    "Kerakli bo'limni tanlang:\nPastdagi kanal <i>ixtiyoriy(<u>obuna bo'lish shart emas</u>)</i>",
+    { reply_markup: mainInlineKey.reply_markup, parse_mode: "HTML" }
   );
 });
 
