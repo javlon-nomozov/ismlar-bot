@@ -18,4 +18,5 @@ exports.keyboard1 = Markup.inlineKeyboard([
     Markup.button.callback("Naͣmͫuͧnaͣ mͫaͣᴛⷮn", "type8"),
   ],
   [Markup.button.callback("𝕹𝖆𝖒𝖚𝖓𝖆 𝖒𝖆𝖙𝖓", "type9")],
+  [Markup.button.callback("🏠 bosh sahifaga", "home")],
 ]);

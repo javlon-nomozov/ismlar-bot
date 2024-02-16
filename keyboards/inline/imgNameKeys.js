@@ -17,6 +17,7 @@ exports.keyboard1 = Markup.inlineKeyboard([
     Markup.button.callback("9️⃣", "girlWithFlower"),
   ],
   [Markup.button.callback("⏭", "names_2")],
+  [Markup.button.callback("🏠 bosh sahifaga", "home")],
 ]);
 
 exports.keyboard2 = Markup.inlineKeyboard([
@@ -39,17 +40,19 @@ exports.keyboard2 = Markup.inlineKeyboard([
     Markup.button.callback("⏮", "names_1"),
     Markup.button.callback("⏭", "names_3"),
   ],
+  [Markup.button.callback("🏠 bosh sahifaga", "home")],
 ]);
 
 exports.keyboard3 = Markup.inlineKeyboard([
   [
     Markup.button.callback("1️⃣", "shyGuy"),
     Markup.button.callback("2️⃣", "simpleGirl"),
-    Markup.button.callback("3️⃣", "stuardess"),
   ],
   [
+    Markup.button.callback("3️⃣", "stuardess"),
     Markup.button.callback("4️⃣", "studentGirl"),
     Markup.button.callback("5️⃣", "whiteheadBoy"),
   ],
   [Markup.button.callback("⏮", "names_2")],
+  [Markup.button.callback("🏠 bosh sahifaga", "home")],
 ]);
