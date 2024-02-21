@@ -10,7 +10,9 @@ composer.on(
       "Kerakli bo'limni tanlang:\nPastdagi kanal <i>ixtiyoriy(<u>obuna bo'lish shart emas</u>)</i>",
       { reply_markup: mainInlineKey.reply_markup, parse_mode: "HTML" }
     );
-    await ctx.deleteMessage()
+    if (ctx.update.callback_query) {
+      await ctx.deleteMessage();
+    }
   }
 );
 

@@ -1,4 +1,5 @@
-const { ADMINS } = require("../data/conf");
+const { allAdmins, allStaff } = require("../data/conf");
+const { logReturn } = require("../tools/functions");
 // update data example
 // const update = {
 //   update_id: 834713609,
@@ -23,24 +24,36 @@ const { ADMINS } = require("../data/conf");
 //   },
 // };
 
-const adminFilter = (update) => {
+const staffFilter = async (update) => {
   try {
-    let result = false;
-
     if (update.message || update.callback_query) {
       const userId = (update.message ? update.message : update.callback_query)
-        .chat.type;
-
-      ADMINS.forEach((admin) => {
-        if (String(userId) === admin) {
-          result = true;
-        }
-      });
+        .from.id;
+      const admins = await allStaff();
+      if (admins.some((el) => el.id == userId)) {
+        return true;
+      }
+      return false;
     }
-
-    return result;
   } catch (error) {
-    console.error(`Error in adminFilter: ${error.message}`);
+    console.error(`Error in staffFilter: ${error.message}`);
+    return false; // Return false to indicate that an error occurred
+  }
+};
+
+const botAdminFilter = async (update) => {
+  try {
+    if (update.message || update.callback_query) {
+      const userId = (update.message ? update.message : update.callback_query)
+        .from.id;
+      const admins = await allAdmins();
+      if (admins.some((el) => el == userId)) {
+        return true;
+      }
+      return false;
+    }
+  } catch (error) {
+    console.error(`Error in staffFilter: ${error.message}`);
     return false; // Return false to indicate that an error occurred
   }
 };
@@ -84,4 +97,10 @@ const channelFilter = (update) => {
   }
 };
 
-module.exports = { adminFilter, privateFilter, groupFilter, channelFilter };
+module.exports = {
+  staffFilter,
+  botAdminFilter,
+  privateFilter,
+  groupFilter,
+  channelFilter,
+};

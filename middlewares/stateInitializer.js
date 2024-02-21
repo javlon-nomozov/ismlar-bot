@@ -1,9 +1,10 @@
 const StateClass = require("../utils/stateClass");
 
-const stateInit = () => (ctx, next) => {
+const stateInit = (ctx, next) => {
   ctx.session = ctx.session || { state: new StateClass("-") };
   ctx.state = ctx.session.state;
   ctx.update.state = ctx.state[ctx.state.current];
+  // ctx.reply('salom')
   next();
 };
 

@@ -1,51 +1,49 @@
 const { Composer, Markup } = require("telegraf");
-const { ADMINS, chats: allChats } = require("../data/conf");
+const { allAdmins, allChats } = require("../data/conf");
+const { logReturn } = require("../tools/functions");
 
 const composer = new Composer();
 composer.use(async (ctx, next) => {
   const chats = await allChats();
-  let result = true;
+  let joined = true;
   const buttons = [];
   for (let e = 0; e < chats.length; e++) {
-    const chatUsername = chats[e];
+    const chatUsername = chats[e].name;
+    const message = ctx.update.message
+      ? ctx.update.message
+      : ctx.update.callback_query;
     try {
       // Get the chat ID of the group using its username
       const chat = await ctx.telegram.getChat(chatUsername);
-      console.log("chat", chat);
       const chatId = chat.id;
-      buttons.push([chat.invite_link]);
       // Get the chat members
-      const member = await ctx.telegram.getChatMember(
-        chatId,
-        ctx.message.from.id
-      );
-      ctx.reply(`Working`);
-      console.log("member", member);
+      const member = await ctx.telegram.getChatMember(chatId, message.from.id);
       if (
         member.status === "member" ||
         member.status === "administrator" ||
         member.status === "creator"
       ) {
-        result*=true;
-        ctx.reply(`You are a member of the chat: ${chat.invite_link}`);
+        joined *= true;
       } else {
-        result*=false;
-        ctx.reply(`You are not a member of the chat: ${chat.invite_link}`);
-        break;
+        buttons.push([Markup.button.url(chat.title, chat.invite_link)]);
+        joined *= false;
       }
     } catch (error) {
-      console.error("Error getting chat data:", error);
-      for (let i = 0; i < ADMINS.length; i++) {
-        const admin = ADMINS[i];
+      const admins = await allAdmins();
+      if (admins[0]) {
         ctx.sendMessage(
           `Chat malumotlarini olishda muammo: chat=${chatUsername} error:${error}`,
-          { chat_id: admin }
+          { chat_id: admins[0] }
         );
       }
-      // ctx.reply("Xatolik yuz berdi");
     }
   }
-  next();
-  //   const chatUsername = "@gdfnjduy";
+  if (!joined) {
+    ctx.reply(
+      "Ushbu chatlarga azo bo'lishingiz kerak",
+      Markup.inlineKeyboard(buttons)
+    );
+  } else next();
 });
+
 module.exports = composer;
