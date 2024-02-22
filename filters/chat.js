@@ -1,28 +1,4 @@
 const { allAdmins, allStaff } = require("../data/conf");
-const { logReturn } = require("../tools/functions");
-// update data example
-// const update = {
-//   update_id: 834713609,
-//   message: {
-//     message_id: 14240,
-//     from: {
-//       id: {user_id},
-//       is_bot: false,
-//       first_name: "Javlon",
-//       username: "great_lvl",
-//       language_code: "ru",
-//     },
-//     chat: {
-//       id: {user_id/group_id},
-//       first_name: "Javlon",
-//       username: "great_lvl",
-//       type: "private",
-//     },
-//     date: 1702657316,
-//     text: "/start",
-//     entities: [[Object]],
-//   },
-// };
 
 const staffFilter = async (update) => {
   try {

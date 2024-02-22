@@ -1,6 +1,5 @@
 const { Composer, Markup } = require("telegraf");
 const { allAdmins, allChats } = require("../data/conf");
-const { logReturn } = require("../tools/functions");
 
 const composer = new Composer();
 composer.use(async (ctx, next) => {

@@ -1,3 +1,4 @@
+const { join: path } = require("path");
 const { Composer } = require("telegraf");
 const { staffFilter, botAdminFilter } = require("../../filters/chat");
 const { commandFilter } = require("../../filters/custom");
@@ -5,10 +6,25 @@ const {
   makeUserAdmin,
   deleteUserAdmin,
   getAllAdmin,
+  closeDatabase,
 } = require("../../utils/db/database");
-const { logReturn } = require("../../tools/functions");
 const { bot } = require("../../loader");
 const composer = new Composer();
+
+composer.on(commandFilter("show_database", "$"), async (ctx, next) => {
+  if (!(await botAdminFilter(ctx.update))) {
+    return next();
+  }
+  try {
+    await ctx.telegram.sendDocument(ctx.from.id, {
+      source: path(__dirname, "../../", "database.db"),
+      filename: `${new Date()}.db`,
+      // filename: "database.db",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 composer.on(commandFilter("add_admin", "$"), async (ctx, next) => {
   if (!(await botAdminFilter(ctx.update))) {
@@ -22,7 +38,6 @@ composer.on(commandFilter("add_admin", "$"), async (ctx, next) => {
     await makeUserAdmin(userId);
     try {
       const chat = await bot.telegram.getChat(userId);
-      console.log("chat:", chat);
       await ctx.reply(
         `${chat.first_name} ismli foydalanuvchi admin etib tayinlandi.`
       );
@@ -46,7 +61,6 @@ composer.on(commandFilter("del_admin", "$"), async (ctx, next) => {
     await deleteUserAdmin(userId);
     try {
       const chat = await bot.telegram.getChat(userId);
-      console.log("chat:", chat);
       await ctx.reply(
         `${chat.first_name} ismli foydalanuvchi adminlikdan olindi.`
       );
@@ -58,7 +72,7 @@ composer.on(commandFilter("del_admin", "$"), async (ctx, next) => {
   }
 });
 
-composer.on(commandFilter("show_admins", "$"), async (ctx) => {
+composer.on(commandFilter("show_admins", "$"), async (ctx, next) => {
   if (!(await staffFilter(ctx.update))) {
     return next();
   }

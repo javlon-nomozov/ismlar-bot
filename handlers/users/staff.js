@@ -9,12 +9,11 @@ const {
   userLeft,
   getCountUsers,
 } = require("../../utils/db/database");
-const { logReturn, sleep } = require("../../tools/functions");
 const { bot } = require("../../loader");
 const composer = new Composer();
 
 composer.on(commandFilter("send_ad", "$"), async (ctx, next) => {
-  if (!logReturn(await staffFilter(ctx.update), "staffFilter")) {
+  if (!(await staffFilter(ctx.update))) {
     return next();
   }
   const users = await getAllUser();
@@ -26,19 +25,14 @@ composer.on(commandFilter("send_ad", "$"), async (ctx, next) => {
       sendCount++;
       const user = users[i];
       try {
-        await ctx.forwardMessage(logReturn(user.id, "--user"), {
+        await ctx.forwardMessage(user.id, {
           message_id: srcMessage.message_id,
         });
       } catch (error) {
         await userLeft(user.id);
-        // updateUser(user.id, { id: user.id, role: "left", coin: 300 });
-        console.log(error);
       }
     }
     await ctx.reply(`Post ${sendCount} ta foydalanuvchiga tarqatildi`);
-    // console.log("srcMessage:", srcMessage);
-    // ctx.forwardMessage(ctx.update.message.from.id, {
-    ctx.reply("A");
   } else {
     await ctx.reply("Kerakli xabarni reply qilib buyruqni kiriting");
   }
@@ -90,8 +84,8 @@ composer.on(commandFilter("add_chat", "$"), async (ctx, next) => {
   }
 });
 
-composer.on(commandFilter("show_chats", "$"), async (ctx) => {
-  if (!logReturn(await staffFilter(ctx.update), "staffFilter")) {
+composer.on(commandFilter("show_chats", "$"), async (ctx, next) => {
+  if (!(await staffFilter(ctx.update))) {
     return next();
   }
 
@@ -101,8 +95,8 @@ composer.on(commandFilter("show_chats", "$"), async (ctx) => {
   ctx.reply(text, { parse_mode: "HTML" });
 });
 
-composer.on(commandFilter("count_user", "$"), async (ctx) => {
-  if (!logReturn(await staffFilter(ctx.update), "staffFilter")) {
+composer.on(commandFilter("count_user", "$"), async (ctx, next) => {
+  if (!(await staffFilter(ctx.update))) {
     return next();
   }
   const countData = await getCountUsers();

@@ -6,8 +6,8 @@ composer.use(
   require("./start"),
   require("./fancy-text"),
   require("./names"),
-  require("./help"),
-  require("./echo"),
+  require("./echo")
+  // require("./help"),
 );
 
 module.exports = composer;

@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 
 // Connect to the SQLite database
-const db = new sqlite3.Database("test.db");
+const db = new sqlite3.Database("database.db");
 
 // CREATE tables
 function createTables() {
@@ -256,18 +256,6 @@ function closeDatabase() {
   db.close();
 }
 
-// (async () => {
-//   try {
-//     await createTables()
-//     await createUser({id:111,role:'member',coin:12})
-//     await createUser({id:32,role:'member',coin:21})
-//     console.log("users:", await getAllUser());
-//   } catch (error) {
-//     console.log("errorrr", error);
-//   }
-// })();
-
-// Export functions to be used in other modules
 module.exports = {
   createTables,
   createUser,
@@ -287,3 +275,7 @@ module.exports = {
   closeDatabase,
   getCountUsers,
 };
+
+// (async () => {
+//   await createTables();
+// })();

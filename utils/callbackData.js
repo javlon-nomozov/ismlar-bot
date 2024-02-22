@@ -1,4 +1,3 @@
-const {session}=require('telegraf')
 const {v4:uuid}=require('uuid')
 class CallbackData {
   #name=uuid();

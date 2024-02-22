@@ -3,7 +3,6 @@ const { Composer } = require("telegraf");
 const composer = new Composer();
 composer.use((ctx, next) => {
   try {
-    console.log("ctx", ctx);
     const chatType = (
       ctx.update.message
         ? ctx.update.message

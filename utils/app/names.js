@@ -103,7 +103,7 @@ const main = async (
       fs.unlink(imgExported, (err) => {
         if (err) console.log(err);
         else {
-          console.log(`\nDeleted file: ${imgExported}`);
+          // console.log(`\nDeleted file: ${imgExported}`);
         }
       });
     }, 20000);
